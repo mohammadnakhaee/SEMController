@@ -1,0 +1,14 @@
+tcp_echoserver.c:410:7:tcp_echoserver_poll	8	static
+tcp_echoserver.c:361:6:tcp_echoserver_error	8	static
+tcp_echoserver.c:123:6:tcp_echoserver_init	8	static
+tcp_echoserver.c:489:6:tcp_echoserver_send	16	static
+tcp_echoserver.c:528:6:tcp_echoserver_connection_close	16	static
+tcp_echoserver.c:158:7:tcp_echoserver_accept	16	static
+tcp_echoserver.c:446:7:tcp_echoserver_sent	8	static
+tcp_echoserver.c:1289:5:check	16	static
+tcp_echoserver.c:1296:5:GetInputs	96	static
+tcp_echoserver.c:1321:5:GetChildCommand	12	static
+tcp_echoserver.c:1347:5:GetDeviceNameLength	0	static
+tcp_echoserver.c:1361:5:IsSame	12	static
+tcp_echoserver.c:576:6:AnswerToOrder	128	dynamic
+tcp_echoserver.c:240:7:tcp_echoserver_recv	32	static
