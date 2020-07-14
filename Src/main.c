@@ -264,6 +264,20 @@ int main(void)
   HAL_Delay(200);
   HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+
+
+  HAL_Delay(1000);
+
+	for(int i=0; i<100; i++)
+	{
+	  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
+	  HAL_Delay(10);
+	  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+	  HAL_Delay(10);
+    }
+
  ///////////
       GPIO_InitTypeDef GPIO_InitStruct;
       GPIO_InitStruct.Pin = GPIO_PIN_4;
@@ -1734,6 +1748,18 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
     //HAL_Delay(1);
     //HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
 }
+void HAL_USART_ErrorCallback(UART_HandleTypeDef *UartHandle)
+{
+	for(int i=0; i<100; i++)
+	{
+	  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
+	  HAL_Delay(10);
+	  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+	  HAL_Delay(10);
+    }
+}
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
 
@@ -2013,6 +2039,8 @@ void HAL_ADC_ErrorCallback(ADC_HandleTypeDef *hadc)
 	 	 			HAL_DMAEx_MultiBufferStart_IT(&hdma_adc1, (uint32_t)&(hadc1.Instance->DR), (uint32_t)(MyPayload[0]),(uint32_t)(MyPayload[1]), wnx);
 
  }
+
+
 //int setsignal(uint8_t Port, uint8_t terminalkind, uint8_t terminal, uint16_t gain)
 //Detectors
 //Indirect Ports
