@@ -55,6 +55,7 @@
 
 #include "lwip/netif.h"
 #include "lwip/timeouts.h"
+#include "lwip/dhcp.h"
 #include "netif/etharp.h"
 #include "ethernetif.h"
 #include "tcp_echoserver.h"
@@ -156,7 +157,7 @@ struct tcp_echoserver_struct
   struct tcp_pcb *pcb;    /* pointer on the current tcp_pcb */
   struct pbuf *p;         /* pointer on the received/to be transmitted pbuf */
 };
-
+volatile int LAN_is_Connected = 0;
 
 /* USER CODE END PV */
 
@@ -243,31 +244,15 @@ int main(void)
   MX_TIM4_Init();
 
   /* USER CODE BEGIN 2 */
+
+
+
   udp_echoserver_init();
   ip_addr_t addrr,localaddrr;
   IP4_ADDR(&addrr, 190, 100, 101, 2);
   IP4_ADDR(&localaddrr, 190, 100, 101, 1);
-  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
-  HAL_Delay(200);
-  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-  HAL_Delay(200);
-  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
-  HAL_Delay(200);
-  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-  HAL_Delay(200);
-  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
-  HAL_Delay(200);
-  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
 
-
-  HAL_Delay(1000);
-
+  /*
 	for(int i=0; i<100; i++)
 	{
 	  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
@@ -277,7 +262,7 @@ int main(void)
 	  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
 	  HAL_Delay(10);
     }
-
+*/
  ///////////
       GPIO_InitTypeDef GPIO_InitStruct;
       GPIO_InitStruct.Pin = GPIO_PIN_4;
@@ -523,7 +508,6 @@ HAL_DMAEx_MultiBufferStart_IT(&hdma_adc1, (uint32_t)&(hadc1.Instance->DR), (uint
   //////////////////////////////////////////////////////
 
 
-
   rotate(4095, 0); //theta = 0
   zoom(4095,4095); //end state of zoom back
   /* Clear the old sample time */
@@ -535,6 +519,18 @@ HAL_DMAEx_MultiBufferStart_IT(&hdma_adc1, (uint32_t)&(hadc1.Instance->DR), (uint
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if (LAN_is_Connected == 0)
+	  {
+		  MX_LWIP_Init();
+		  if (LAN_is_Connected == 1)
+		  {
+			  dhcp_start(&gnetif);
+			  udp_echoserver_init();
+			  udp_bind(upcb, &localaddrr, UDP_CLIENT_PORT);
+			  udp_connect(upcb, &addrr, UDP_CLIENT_PORT);
+			  tcp_echoserver_init();
+		  }
+	  }
 	  //tcp_echoserver_send(tcp_echoserver_pcb, ess);
 	  //HAL_Delay(1000);
 	  //HAL_GPIO_TogglePin(GPIOB, LD2_Pin);
