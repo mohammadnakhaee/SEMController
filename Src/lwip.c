@@ -142,36 +142,16 @@ void MX_LWIP_Init(void)
   else
   {
     LAN_is_Connected = 0;
-    for(int i=0; i<100; i++)
-        		{
-        		  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
-        		  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
-        		  HAL_Delay(2);
-        		  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
-        		  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-        		  HAL_Delay(2);
-        	    }
-          	  HAL_Delay(200);
-          		for(int i=0; i<100; i++)
-          		{
-          		  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
-          		  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
-          		  HAL_Delay(2);
-          		  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
-          		  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-          		  HAL_Delay(2);
-          	    }
-          	  HAL_Delay(200);
-          		for(int i=0; i<100; i++)
-          		{
-          		  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
-          		  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
-          		  HAL_Delay(2);
-          		  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
-          		  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
-          		  HAL_Delay(2);
-          	    }
-
+    for(int i=0; i<10; i++)
+    {
+	HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_SET);
+	HAL_Delay(30);
+	HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_10, GPIO_PIN_RESET);
+	HAL_Delay(150);
+    }
+    if (LAN_is_Connected == 0) HAL_NVIC_SystemReset();
   }
 
 /* USER CODE END 3 */

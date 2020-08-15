@@ -519,18 +519,7 @@ HAL_DMAEx_MultiBufferStart_IT(&hdma_adc1, (uint32_t)&(hadc1.Instance->DR), (uint
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if (LAN_is_Connected == 0)
-	  {
-		  MX_LWIP_Init();
-		  if (LAN_is_Connected == 1)
-		  {
-			  dhcp_start(&gnetif);
-			  udp_echoserver_init();
-			  udp_bind(upcb, &localaddrr, UDP_CLIENT_PORT);
-			  udp_connect(upcb, &addrr, UDP_CLIENT_PORT);
-			  tcp_echoserver_init();
-		  }
-	  }
+
 	  //tcp_echoserver_send(tcp_echoserver_pcb, ess);
 	  //HAL_Delay(1000);
 	  //HAL_GPIO_TogglePin(GPIOB, LD2_Pin);
